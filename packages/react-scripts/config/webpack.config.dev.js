@@ -224,7 +224,8 @@ module.exports = {
           // The preset includes JSX, Flow, and some ESnext features.
           {
             test: /\.(js|mjs|jsx|ts|tsx)$/,
-            include: paths.appSrc,
+            include: paths.srcPaths,
+            exclude: [/[/\\\\]node_modules[/\\\\]/],
             loader: require.resolve('babel-loader'),
             options: {
               customize: require.resolve(
@@ -270,7 +271,7 @@ module.exports = {
           // Unlike the application JS, we only compile the standard ES features.
           {
             test: /\.(js|mjs)$/,
-            exclude: /@babel(?:\/|\\{1,2})runtime/,
+            exclude: [/@babel(?:\/|\\{1,2})runtime/, ...paths.srcPaths],
             loader: require.resolve('babel-loader'),
             options: {
               babelrc: false,

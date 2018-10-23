@@ -11,7 +11,7 @@
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
-
+const monoPaths = require('./monoPaths');
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebook/create-react-app/issues/637
 const appDirectory = fs.realpathSync(process.cwd());
@@ -152,3 +152,12 @@ if (
 // @remove-on-eject-end
 
 module.exports.moduleFileExtensions = moduleFileExtensions;
+
+// workspaces support
+module.exports.srcPaths = [module.exports.appSrc];
+
+if (monoPaths.workspaces) {
+  // if app is in a monorepo (lerna or yarn workspace), treat other packages in
+  // the monorepo as if they are app source
+  Array.prototype.push.apply(module.exports.srcPaths, monoPaths.workspaces);
+}
